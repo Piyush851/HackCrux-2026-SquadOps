@@ -1,37 +1,33 @@
 from ai_models.speech_to_text.whisper_service import transcribe_audio
+from ai_models.nlp_pipelines.summarizer import generate_summary
 from ai_models.nlp_pipelines.ner_extractor import extract_entities
-from ai_models.nlp_pipelines.summarizer import summarize_text
 from ai_models.urgency_classifier.classifier import classify_urgency
 
-
-def process_text_input(text: str) -> dict:
-    """
-    Process patient text input through the AI pipeline
-    """
-
+def process_text_pipeline(text):
+    """Runs raw text through the complete array of AI models."""
+    
+    # In a production app, you might run these asynchronously to save time,
+    # but for a hackathon, sequential execution is perfectly stable.
+    summary = generate_summary(text)
     entities = extract_entities(text)
-
-    summary = summarize_text(text)
-
     urgency = classify_urgency(text)
-
+    
     return {
-        "original_text": text,
-        "summary": summary,
-        "entities": entities,
-        "urgency_level": urgency
+        "urgency_level": urgency.get("urgency_level", "Unknown"),
+        "urgency_score": urgency.get("urgency_score", 0),
+        "structured_summary": summary,
+        "extracted_entities": entities
     }
 
-
-def process_audio_input(audio_path: str) -> dict:
-    """
-    Process patient audio input
-    """
-
-    transcript = transcribe_audio(audio_path)
-
-    result = process_text_input(transcript)
-
-    result["audio_transcript"] = transcript
-
-    return result
+def process_audio_pipeline(filepath, filename):
+    """Transcribes audio, then runs the text through the pipeline."""
+    
+    transcribed_text = transcribe_audio(filepath, filename)
+    
+    # If transcription fails, don't try to process the error message through NLP
+    if transcribed_text.startswith("Error"):
+        return transcribed_text, None 
+        
+    analysis_result = process_text_pipeline(transcribed_text)
+    
+    return transcribed_text, analysis_result

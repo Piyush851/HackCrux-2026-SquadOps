@@ -1,30 +1,22 @@
-import spacy
+import json
+from ai_models.config import client
 
-# Load biomedical model
-nlp = spacy.load("en_core_sci_sm")
-
-
-def extract_entities(text: str) -> dict:
+def extract_entities(text):
+    """Extracts clinical entities and returns them as a parsed JSON dictionary."""
+    prompt = f"""
+    You are an AI clinical triage assistant. Extract medical entities from the text into this EXACT JSON format:
+    {{"symptoms": ["list"], "timeline": ["list"], "risk_indicators": ["list"]}}
+    
+    Text: {text}
     """
-    Extract medical entities from patient text
-    """
-
-    doc = nlp(text)
-
-    symptoms = []
-    conditions = []
-
-    for ent in doc.ents:
-
-        label = ent.label_.lower()
-
-        if "symptom" in label or "disease" in label:
-            symptoms.append(ent.text)
-
-        else:
-            conditions.append(ent.text)
-
-    return {
-        "symptoms": list(set(symptoms)),
-        "conditions": list(set(conditions))
-    }
+    try:
+        response = client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            model="llama-3.3-70b-versatile",
+            temperature=0.1,
+            response_format={"type": "json_object"} # Forces JSON output
+        )
+        return json.loads(response.choices[0].message.content)
+    except Exception as e:
+        print(f"NER Error: {e}")
+        return {"symptoms": [], "timeline": [], "risk_indicators": []}

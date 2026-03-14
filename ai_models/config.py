@@ -1,11 +1,14 @@
 import os
-import google.generativeai as genai
+from dotenv import load_dotenv
+from groq import Groq
 
-# Load API keys
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+# Load environment variables (ensure your .env file is in the root directory)
+load_dotenv()
 
-# Configure Gemini
-genai.configure(api_key=GEMINI_API_KEY)
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-# Gemini model instance
-model = genai.GenerativeModel("gemini-1.5-flash")
+if not GROQ_API_KEY:
+    raise ValueError("Missing GROQ_API_KEY in environment variables.")
+
+# Initialize a globally accessible client
+client = Groq(api_key=GROQ_API_KEY)

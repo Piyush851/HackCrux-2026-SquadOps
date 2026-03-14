@@ -1,18 +1,14 @@
-import openai
-import os
+from ai_models.config import client
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
-
-def transcribe_audio(audio_path: str) -> str:
-    """
-    Converts audio file into text using Whisper API
-    """
-
-    with open(audio_path, "rb") as audio_file:
-        transcript = openai.Audio.transcribe(
-            model="whisper-1",
-            file=audio_file
-        )
-
-    return transcript["text"]
+def transcribe_audio(filepath, filename):
+    """Passes an audio file to Whisper for highly accurate transcription."""
+    try:
+        with open(filepath, "rb") as file_to_transcribe:
+            transcription = client.audio.transcriptions.create(
+                model="whisper-large-v3", 
+                file=(filename, file_to_transcribe.read()) 
+            )
+        return transcription.text
+    except Exception as e:
+        print(f"Whisper Transcription Error: {e}")
+        return f"Error transcribing audio: {str(e)}"
