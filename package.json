@@ -1,0 +1,20 @@
+{
+  "name": "hackcrux-2026-squadops",
+  "version": "1.0.0",
+  "description": "**Team SquadOps** | **HackCrux - Problem Statement 2**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Piyush851/HackCrux-2026-SquadOps.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Piyush851/HackCrux-2026-SquadOps/issues"
+  },
+  "homepage": "https://github.com/Piyush851/HackCrux-2026-SquadOps#readme"
+}
