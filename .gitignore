@@ -40,3 +40,9 @@ ai_models/weights/
 .vscode/
 .idea/
 *.swp
+
+# =========================
+# Testing Files
+# =========================
+ai_models/tests/
+ai_models/run_tests.py
