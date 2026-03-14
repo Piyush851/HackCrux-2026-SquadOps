@@ -11,6 +11,11 @@ export const triageService = {
         if (!response.ok) throw new Error("Failed to process text");
         return response.json();
     },
+    getMetrics: async () => {
+        const response = await fetch(`${API_BASE_URL}/metrics`);
+        if (!response.ok) throw new Error('Failed to fetch metrics');
+        return response.json();
+    },
 
     // 2. Send audio file
     processAudio: async (file) => {
