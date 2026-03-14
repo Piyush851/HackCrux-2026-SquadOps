@@ -1,0 +1,42 @@
+# =========================
+# Node & React (Frontend)
+# =========================
+node_modules/
+npm-debug.log
+yarn-error.log
+frontend/build/
+frontend/.env
+frontend/.env.local
+
+# =========================
+# Python & Flask/Django (Backend)
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+backend/.env
+.flaskenv
+
+# =========================
+# Machine Learning & AI Models
+# =========================
+*.pkl
+*.h5
+*.onnx
+*.pt
+*.pth
+ai_models/datasets/
+ai_models/weights/
+*.csv
+*.jsonl
+
+# =========================
+# OS & Editor Files
+# =========================
+.DS_Store
+.vscode/
+.idea/
+*.swp
