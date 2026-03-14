@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Piyush851/HackCrux-2026-SquadOps/issues"
   },
-  "homepage": "https://github.com/Piyush851/HackCrux-2026-SquadOps#readme"
+  "homepage": "https://github.com/Piyush851/HackCrux-2026-SquadOps#readme",
+  "dependencies": {
+    "recharts": "^3.8.0"
+  }
 }
