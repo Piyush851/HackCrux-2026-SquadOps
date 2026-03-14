@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 from flask_cors import CORS
-from app.routes.triage_routes import triage_bp
+from backend.app.routes.triage_routes import triage_bp
 
 def create_app():
     app = Flask(__name__)
