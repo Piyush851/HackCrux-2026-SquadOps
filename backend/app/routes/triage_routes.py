@@ -4,8 +4,28 @@ from backend.app.services.file_service import save_upload, extract_text_from_pdf
 from ai_models.pipeline import process_text_pipeline, process_audio_pipeline
 from backend.app.services.db_service import save_patient_record, get_all_patients
 from collections import Counter
+import re
 
 triage_bp = Blueprint('triage', __name__)
+
+def clean_ai_json(raw_string):
+    """Strips markdown and parses the LLM string into a Python Dictionary."""
+    if isinstance(raw_string, dict):
+        return raw_string # It's already a dict, we are good!
+        
+    try:
+        # Find everything between the first { and the last }
+        match = re.search(r'\{.*\}', str(raw_string), re.DOTALL)
+        if match:
+            clean_str = match.group(0)
+            return json.loads(clean_str)
+        else:
+            print("🚨 AI Output did not contain valid JSON brackets.")
+            return {}
+    except json.JSONDecodeError as e:
+        print(f"🚨 JSON Parsing Error: {e}")
+        print(f"Raw Output was: {raw_string}")
+        return {}
 
 @triage_bp.route('/text', methods=['POST'])
 def process_text():
